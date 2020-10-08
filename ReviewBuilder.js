@@ -8,7 +8,11 @@ class ReviewBuilder {
     );
     const reviews = JSON.parse(fs.readFileSync("./data/reviews.json", "utf-8"));
     const users = JSON.parse(fs.readFileSync("./data/users.json", "utf-8"));
-    return produceResult({ products, reviews, users });
+    return produceResult({
+      products,
+      reviews,
+      users,
+    });
   }
 
   buildReviewsCallbacks(cb) {
@@ -21,7 +25,13 @@ class ReviewBuilder {
           products = JSON.parse(products);
           reviews = JSON.parse(reviews);
           users = JSON.parse(users);
-          cb(produceResult({ products, reviews, users }));
+          cb(
+            produceResult({
+              products,
+              reviews,
+              users,
+            })
+          );
         });
       });
     });
@@ -34,17 +44,36 @@ class ReviewBuilder {
       readFile("./data/users.json"),
     ])
       .then((data) => {
-        let products = JSON.parse(data[0]);
-        let reviews = JSON.parse(data[1]);
-        let users = JSON.parse(data[2]);
-        let result = produceResult({ products, reviews, users });
+        const products = JSON.parse(data[0]);
+        const reviews = JSON.parse(data[1]);
+        const users = JSON.parse(data[2]);
+        const result = produceResult({
+          products,
+          reviews,
+          users,
+        });
         return result;
       })
       .catch((err) => console.log(err));
   }
 
   async buildReviewsAsyncAwait() {
-    // FIXME
+    const data = await Promise.all([
+      readFile("./data/products.json"),
+      readFile("./data/reviews.json"),
+      readFile("./data/users.json"),
+    ]);
+
+    const products = JSON.parse(data[0]);
+    const reviews = JSON.parse(data[1]);
+    const users = JSON.parse(data[2]);
+    const result = produceResult({
+      products,
+      reviews,
+      users,
+    });
+
+    return result;
   }
 }
 
