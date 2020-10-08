@@ -28,7 +28,19 @@ class ReviewBuilder {
   }
 
   buildReviewsPromises() {
-    // FIXME
+    return Promise.all([
+      readFile("./data/products.json"),
+      readFile("./data/reviews.json"),
+      readFile("./data/users.json"),
+    ])
+      .then((data) => {
+        let products = JSON.parse(data[0]);
+        let reviews = JSON.parse(data[1]);
+        let users = JSON.parse(data[2]);
+        let result = produceResult({ products, reviews, users });
+        return result;
+      })
+      .catch((err) => console.log(err));
   }
 
   async buildReviewsAsyncAwait() {
